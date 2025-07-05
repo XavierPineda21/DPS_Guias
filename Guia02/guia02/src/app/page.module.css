@@ -44,7 +44,7 @@
   padding: 20px;
   border: 1px solid #ccc;
   border-radius:5px;
-  background-color: #fff;
+  background-color: #1a1a1a;
 }
 
 .numeros{
@@ -73,7 +73,7 @@ margin-right: 10px;
   background-color: #0070f3;
   border: none;
   padding: 0.5rem 1rem;
-  color: white;
+  color: bla;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -113,7 +113,7 @@ list-style-type: none; padding: 0;
   border: 1px solid #ddd;
   padding: 1rem;
   border-radius: 12px;
-  background: #f9f9f9;
+  background: #333;
   text-align: center;
   width: 200px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
