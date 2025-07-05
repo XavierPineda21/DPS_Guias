@@ -39,7 +39,6 @@ const Equipos = ({ equipos }) => { return (
 
 export default function Home() {
   //Ejercicio 2
-  // Simula la obtención de datos desde tu JSON 
 const equiposData = [
 {"id": 1,"nombre": "Real Madrid", "plantilla":[
 {"id": 1,"nombre":"Eden Hazard","Altura":"1.75","Peso":"74Kg", "imagen": "/Hazard.jpg"},
@@ -119,8 +118,6 @@ const limpiar = () => {
   setResultado(null);
 };
 
-
-
 //Ejercicio 4
 const [numero, setNumero] = useState(1); 
 const [limite, setLimite] = useState(10); 
@@ -129,9 +126,65 @@ const generarTabla = () => { const nuevaTabla = []; for (let i = 1; i <= limite;
 nuevaTabla.push(`${numero} x ${i} = ${numero * i}`);
 }
 setResultado4(nuevaTabla);
-
 };
 
+//Contador
+const [contador, setContador] = useState(0);
+
+const incrementar = () => {
+  setContador(contador + 1);
+};
+
+const decrementar = () => {
+  if (contador > 0) {
+      setContador(contador - 1);
+  }
+};
+
+// Conversor Celsius/Fahrenheit
+const [temperatura, setTemperatura] = useState('');
+const [tipoConversion, setTipoConversion] = useState('CtoF');
+const [resultadoTemp, setResultadoTemp] = useState('');
+
+const convertirTemperatura = () => {
+  if (temperatura === '') {
+    setResultadoTemp('Por favor ingresa una temperatura.');
+    return;
+  }
+
+  const tempNum = parseFloat(temperatura);
+  let resultado = '';
+
+  if (tipoConversion === 'CtoF') {
+    resultado = tempNum + '°C = ' + (tempNum * 9 / 5 + 32).toFixed(2) + '°F';
+  } else {
+    resultado = tempNum + '°F = ' + ((tempNum - 32) * 5 / 9).toFixed(2) + '°C';
+  }
+
+  setResultadoTemp(resultado);
+};
+
+const [usuario, setUsuario] = useState('');
+const [contrasena, setContrasena] = useState('');
+const [mensaje, setMensaje] = useState('');
+
+//Dats simulados
+const usuarioCorrecto = 'Admin';
+const contrasenaCorrecta = '1234';
+
+const manejarLogin = (e) => {
+  e.preventDefault();
+
+  if (usuario === usuarioCorrecto && contrasena === contrasenaCorrecta) {
+      setMensaje('¡Bienvenido, ' + usuario + '!');
+  } 
+  else {
+      setMensaje('Usuario o contraseña incorrectos.');
+  }
+};
+
+
+//Return
   return(
     <main className={styles.main}>
 
@@ -200,6 +253,77 @@ setResultado4(nuevaTabla);
   </div>
 
 
-    </main>
+<div className={styles.contador}>
+    <h2>Contador</h2>
+    <p>Valor actual: {contador}</p>
+    <button className={styles.button} onClick={incrementar} style={{ marginRight: '10px' }}>Incrementar</button>
+    <button className={styles.button} onClick={decrementar} disabled={contador === 0}>Decrementar</button>
+</div>
+
+
+<div className={styles.calculadora}>
+  <h2 className={styles.title2}>Conversor de Temperaturas</h2>
+
+  <label className={styles.text}>
+    Ingrese el valor de temperatura:
+    <input
+      type="number"
+      className={styles.input}
+      value={temperatura}
+      onChange={(e) => setTemperatura(e.target.value)}
+    />
+  </label>
+
+  <label className={styles.text}>
+    Tipo de conversión:
+    <select
+      className={styles.input}
+      value={tipoConversion}
+      onChange={(e) => setTipoConversion(e.target.value)}
+    >
+      <option value="CtoF">Celsius a Fahrenheit</option>
+      <option value="FtoC">Fahrenheit a Celsius</option>
+    </select>
+  </label>
+
+  <button className={styles.button} onClick={convertirTemperatura}>
+    Convertir
+  </button>
+
+  {resultadoTemp && <div className={styles.resultado}>{resultadoTemp}</div>}
+</div>
+
+<div style={{ maxWidth: '300px', margin: 'auto', padding: '20px', border: '1px solid #ccc' }}>
+      <h2>Login</h2>
+      <form onSubmit={manejarLogin}>
+        <div>
+          <label>Usuario:</label><br />
+          <input
+            type="text"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+            required
+            autoComplete="username"
+          />
+        </div>
+        <div style={{ marginTop: '10px' }}>
+          <label>Contraseña:</label><br />
+          <input
+            type="password"
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+        </div>
+        <button type="submit" style={{ marginTop: '15px' }}>Iniciar sesión</button>
+      </form>
+
+      {mensaje && (
+        <p style={{ marginTop: '15px', fontWeight: 'bold' }}>{mensaje}</p>
+      )}
+    </div>
+  </main>
+
   );
 }
