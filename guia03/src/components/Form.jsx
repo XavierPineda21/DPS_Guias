@@ -1,44 +1,120 @@
 "use client";
-import React, { useState } from 'react';
-import Todo from './Todo';
+import React, { useState, useEffect } from 'react';
+import Producto from './Producto';
 import styles from "../app/page.module.css";
 
 const Form = () => {
-    const [todo,setTodo]=useState({})
-    const [todos,setTodos]=useState([
-        {todo:'todo 1'},
-        {todo:'todo 2'},
-        {todo:'todo 3'}
-    ])
-    const handleChange=e=>setTodo({[e.target.name]:e.target.value})
-    const handleClick=e=>{
-        if(Object.keys(todo).length===0|| todo.todo.trim()===''){
-            alert('el campo no puede ser vacio')
-            return
-        }
-        setTodos([...todos,todo])
+  const [producto, setProducto] = useState({
+    nombre: '',
+    marca: '',
+    cantidad: '',
+    precio: ''
+  });
+
+  const [productos, setProductos] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  const handleChange = (e) => {
+    setProducto({
+      ...producto,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleClick = () => {
+    const { nombre, marca, cantidad, precio } = producto;
+
+    if (!nombre || !marca || !cantidad || !precio) {
+      alert('Todos los campos son obligatorios');
+      return;
     }
 
-    const deleteTodo=indice=>{
-        const newTodos=[...todos]
-        newTodos.splice(indice,1)
-        setTodos(newTodos)
+    if (isNaN(cantidad) || isNaN(precio)) {
+      alert('Cantidad y Precio deben ser valores numéricos');
+      return;
     }
 
-    return(
-        <>
-        <form onSubmit={e=>e.preventDefault()}>
-            <label>Agrgar Tarea</label><br/>
-            <input className={styles.form_input} type='text' name='todo' onChange={handleChange}/>
-            <button className={styles.form_button} onClick={handleClick}>Agregar</button>
-        </form>
-        {
-            todos.map((value,index)=>(
-                <Todo todo={value.todo} key={index} index={index} deleteTodo={deleteTodo}/>
-            ))
-        }
-        </>
-    )
-}
+    const nuevoProducto = {
+      nombre,
+      marca,
+      cantidad: parseInt(cantidad),
+      precio: parseFloat(precio)
+    };
 
-export default Form
+    setProductos([...productos, nuevoProducto]);
+    setProducto({ nombre: '', marca: '', cantidad: '', precio: '' });
+  };
+
+  const eliminarProducto = (indice) => {
+    const copia = [...productos];
+    copia.splice(indice, 1);
+    setProductos(copia);
+  };
+
+  useEffect(() => {
+    const nuevoTotal = productos.reduce(
+      (acc, item) => acc + item.cantidad * item.precio,
+      0
+    );
+    setTotal(nuevoTotal);
+  }, [productos]);
+
+  return (
+    <>
+      <form onSubmit={e => e.preventDefault()}>
+        <label>Agregar Producto</label><br />
+        <input
+          className={styles.form_input}
+          type='text'
+          name='nombre'
+          placeholder='Nombre'
+          value={producto.nombre}
+          onChange={handleChange}
+        />
+        <input
+          className={styles.form_input}
+          type='text'
+          name='marca'
+          placeholder='Marca'
+          value={producto.marca}
+          onChange={handleChange}
+        />
+        <input
+          className={styles.form_input}
+          type='number'
+          name='cantidad'
+          placeholder='Cantidad'
+          value={producto.cantidad}
+          onChange={handleChange}
+        />
+        <input
+          className={styles.form_input}
+          type='number'
+          name='precio'
+          placeholder='Precio'
+          step='0.01'
+          value={producto.precio}
+          onChange={handleChange}
+        />
+        <button className={styles.form_button} onClick={handleClick}>Agregar</button>
+      </form>
+
+      <h2>Total: ${total.toFixed(2)}</h2>
+
+      {
+        productos.map((prod, index) => (
+          <Producto
+            producto={prod}
+            key={index}
+            index={index}
+            eliminarProducto={eliminarProducto}
+          />
+        ))
+      }
+      <h2 className={styles.total}>Total: ${total.toFixed(2)}</h2>
+
+    </>
+  );
+};
+
+export default Form;
