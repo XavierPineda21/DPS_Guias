@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nombre": "JavaScript",
+    "imagen": "/images/javascript.png",
+    "descripcion": "Lenguaje de scripting ampliamente usado en el desarrollo web."
+  },
+  {
+    "id": 2,
+    "nombre": "Python",
+    "imagen": "/images/python.png",
+    "descripcion": "Lenguaje interpretado con sintaxis clara y múltiples aplicaciones."
+  },
+  {
+    "id": 3,
+    "nombre": "C++",
+    "imagen": "/images/c++.png",
+    "descripcion": "Lenguaje de propósito general orientado a objetos y muy eficiente."
+  }
+]
